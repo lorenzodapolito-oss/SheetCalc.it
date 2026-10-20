@@ -35,3 +35,5 @@ Generated-in-code art is original and has no file to list: the UI icon set (`cra
 | `docs/images/format-chart.png` | GridCraft contributors | screenshot of GridCraft rendered offscreen (`crates/ui-egui/examples/snapshot.rs`) showing an original sample workbook | MIT OR Apache-2.0 | README screenshot; no third-party content |
 | `docs/images/page-break.png` | GridCraft contributors | screenshot of GridCraft rendered offscreen (`crates/ui-egui/examples/snapshot.rs`) showing an original sample workbook | MIT OR Apache-2.0 | README screenshot; no third-party content |
 | `docs/images/sheetcalc-it.png` | SheetCalc.it author | screenshot of SheetCalc.it rendered offscreen (`crates/ui-egui/examples/snapshot.rs`) showing the original sample workbook | MIT OR Apache-2.0 | README screenshot; no third-party content |
+| `Windows/SheetCalc.it-0.8.0-windows-x64.zip` | SheetCalc.it author | compiled from this repository (`cargo build --release -p gridcraft`) | MIT OR Apache-2.0 | Windows build; contains only the program and an empty portable.txt |
+| `Windows/LEGGIMI.txt` | SheetCalc.it author | original | MIT OR Apache-2.0 | Download instructions |

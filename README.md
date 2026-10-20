@@ -31,6 +31,14 @@ e filtri, convalida dei dati e altro, è il lavoro di GridCraft. Il progetto ori
 Non tutte le descrizioni delle funzioni e alcune finestre sono già tradotte: ciò che manca appare in
 inglese.
 
+## Scarica il programma (Windows)
+
+Versione già compilata, 64 bit, senza installazione:
+**[SheetCalc.it-0.8.0-windows-x64.zip](Windows/SheetCalc.it-0.8.0-windows-x64.zip)** (premi «Download» o
+«Scarica» nella pagina del file). Estrai lo zip e avvia `SheetCalc.it.exe`. Nello zip c'è già un file
+`portable.txt`, quindi impostazioni e log restano accanto al programma. Windows può avvisare che il
+file non è firmato: scegli «Ulteriori informazioni» e «Esegui comunque».
+
 ## Come compilare su Windows
 
 Servono [Rust](https://rustup.rs) (toolchain `x86_64-pc-windows-gnu`) e un compilatore C per Windows,

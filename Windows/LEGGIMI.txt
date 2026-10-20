@@ -1,0 +1,12 @@
+SheetCalc.it 0.8.0 per Windows (64 bit)
+
+1. Scarica SheetCalc.it-0.8.0-windows-x64.zip
+2. Estrai lo zip dove vuoi (anche su una chiavetta).
+3. Avvia SheetCalc.it.exe. Non serve installare nulla.
+
+Nella cartella c'e' un file vuoto chiamato portable.txt: tiene impostazioni e log
+accanto al programma, in una cartella sheetcalc-data creata al primo avvio.
+Cancella portable.txt se preferisci salvarli nel profilo di Windows.
+
+Se Windows avvisa che il programma non e' riconosciuto, scegli "Ulteriori informazioni"
+e poi "Esegui comunque": il file non e' firmato digitalmente.
