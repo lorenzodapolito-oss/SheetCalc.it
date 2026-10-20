@@ -1,4 +1,11 @@
 <p align="center">
+
+> **Fork italiano.** Questa versione di GridCraft parte in **italiano**: interfaccia tradotta
+> (terminologia di Excel), funzioni in italiano (`SOMMA`, `SE`, `CONTA.SE`, `CERCA.VERT`, …),
+> separatore di elenco `;` e virgola decimale, `VERO`/`FALSO`. Nei file `.xlsx` le formule restano
+> salvate con i nomi inglesi, quindi si aprono normalmente in Excel. La lingua si cambia da
+> Visualizza → Lingua dell'interfaccia.
+
   <a href="https://getartcraft.com/">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/brand/artcraft-logo-white.svg">

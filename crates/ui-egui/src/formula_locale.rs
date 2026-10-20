@@ -108,7 +108,14 @@ pub(crate) fn signature(name: &str, locale: FormulaLocale) -> Option<String> {
     {
         return Some((*signature).into());
     }
-    crate::formula_bar::function_signature(canonical).map(|s| s.replace(',', &locale.list_separator().to_string()))
+    crate::formula_bar::function_signature(canonical).map(|s| {
+        let s = s.replace(',', &locale.list_separator().to_string());
+        // Show the name in the language the user types it in.
+        match s.strip_prefix(canonical) {
+            Some(rest) if locale != FormulaLocale::En => format!("{}{rest}", locale.function_name(canonical)),
+            _ => s,
+        }
+    })
 }
 
 pub(crate) fn description(name: &str, locale: FormulaLocale) -> Option<String> {

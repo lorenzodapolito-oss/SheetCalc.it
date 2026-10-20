@@ -51,7 +51,7 @@ pub fn start() {
                     app.ui.system_theme = true;
                     // Follow the browser's language, except a CJK one: the web build has no system
                     // CJK fonts (none are bundled), so that interface would render as tofu.
-                    let browser = gridcraft_ui_egui::i18n::Language::system();
+                    let browser = gridcraft_ui_egui::i18n::Language::It;
                     if !matches!(
                         browser,
                         gridcraft_ui_egui::i18n::Language::Zh | gridcraft_ui_egui::i18n::Language::Ja | gridcraft_ui_egui::i18n::Language::Ko
