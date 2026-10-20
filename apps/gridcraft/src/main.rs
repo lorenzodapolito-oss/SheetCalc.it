@@ -73,7 +73,20 @@ impl eframe::App for App {
     }
 }
 
+/// Portable mode: a folder named `sheetcalc-data` next to the program keeps the settings and the
+/// logs there instead of in the user's profile, so the program and its data can travel together
+/// (USB stick, synced folder). Create the folder to switch it on; delete it to switch it off.
+const PORTABLE_DIR: &str = "sheetcalc-data";
+
+fn portable_dir() -> Option<std::path::PathBuf> {
+    let dir = std::env::current_exe().ok()?.parent()?.join(PORTABLE_DIR);
+    dir.is_dir().then_some(dir)
+}
+
 fn config_dir() -> Option<std::path::PathBuf> {
+    if let Some(dir) = portable_dir() {
+        return Some(dir);
+    }
     if cfg!(target_os = "macos") {
         std::env::var_os("HOME").map(|h| std::path::PathBuf::from(h).join("Library/Application Support/SheetCalc.it"))
     } else if cfg!(windows) {

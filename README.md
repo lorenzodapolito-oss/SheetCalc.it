@@ -351,3 +351,9 @@ Forks and modified versions must remove them.
   <a href="https://getartcraft.com/"><img alt="ArtCraft" src="docs/brand/artcraft-mark.svg" width="28"></a><br>
   <sub>Made by the <a href="https://getartcraft.com/">ArtCraft</a> team and community.</sub>
 </p>
+
+## Modalità portatile
+
+Per tenere impostazioni e log accanto al programma, crea una cartella chiamata `sheetcalc-data`
+nella stessa cartella di `SheetCalc.it.exe`. Se la cartella esiste, il programma usa quella invece
+del profilo di Windows; cancellala per tornare al comportamento normale.
