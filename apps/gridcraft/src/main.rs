@@ -73,13 +73,20 @@ impl eframe::App for App {
     }
 }
 
-/// Portable mode: a folder named `sheetcalc-data` next to the program keeps the settings and the
-/// logs there instead of in the user's profile, so the program and its data can travel together
-/// (USB stick, synced folder). Create the folder to switch it on; delete it to switch it off.
+/// Portable mode: next to the program, either a folder named `sheetcalc-data` or a file named
+/// `portable.txt` keeps the settings and the logs there instead of in the user's profile, so the
+/// program and its data can travel together (USB stick, synced folder). With `portable.txt` the
+/// folder is created on first run. Remove both to switch it off.
 const PORTABLE_DIR: &str = "sheetcalc-data";
+const PORTABLE_MARKER: &str = "portable.txt";
 
 fn portable_dir() -> Option<std::path::PathBuf> {
-    let dir = std::env::current_exe().ok()?.parent()?.join(PORTABLE_DIR);
+    let exe = std::env::current_exe().ok()?;
+    let base = exe.parent()?;
+    let dir = base.join(PORTABLE_DIR);
+    if base.join(PORTABLE_MARKER).is_file() && !dir.is_dir() {
+        std::fs::create_dir_all(&dir).ok()?;
+    }
     dir.is_dir().then_some(dir)
 }
 

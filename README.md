@@ -354,6 +354,7 @@ Forks and modified versions must remove them.
 
 ## Modalità portatile
 
-Per tenere impostazioni e log accanto al programma, crea una cartella chiamata `sheetcalc-data`
-nella stessa cartella di `SheetCalc.it.exe`. Se la cartella esiste, il programma usa quella invece
-del profilo di Windows; cancellala per tornare al comportamento normale.
+Per tenere impostazioni e log accanto al programma, metti nella stessa cartella di
+`SheetCalc.it.exe` un file vuoto chiamato `portable.txt` (la cartella `sheetcalc-data` viene creata
+da sola al primo avvio) oppure crea direttamente la cartella `sheetcalc-data`. Cancella entrambi
+per tornare al comportamento normale, con le impostazioni nel profilo di Windows.
