@@ -1,6 +1,6 @@
 //! Design tokens and fonts.
 //!
-//! Colours are our own, tuned to read like a modern desktop spreadsheet. Fonts come from the
+//! Colours are our own. This fork's light theme is the soft pastel one of WordBook.it (ivory ribbon, dusty-blue title area, sage tabs; text anthracite, never black; white only in the text input). Fonts come from the
 //! operating system at runtime (nothing bundled): the UI uses the platform UI font, cells use the
 //! best available match for the workbook font (Calibri/Carlito/Aptos/Arial…) with egui's built-in
 //! fonts as the last resort.
@@ -56,38 +56,38 @@ impl Tokens {
     pub fn light() -> Tokens {
         Tokens {
             dark: false,
-            window: Color32::from_rgb(0xF3, 0xF3, 0xF3),
-            ribbon: Color32::from_rgb(0xFF, 0xFF, 0xFF),
-            ribbon_border: Color32::from_rgb(0xE3, 0xE3, 0xE3),
-            text: Color32::from_rgb(0x24, 0x24, 0x24),
-            text_dim: Color32::from_rgb(0x61, 0x61, 0x61),
-            text_disabled: Color32::from_rgb(0xB0, 0xB0, 0xB0),
-            accent: Color32::from_rgb(0x10, 0x7C, 0x41),
-            accent_dark: Color32::from_rgb(0x0B, 0x5E, 0x31),
-            accent_soft: Color32::from_rgb(0xDF, 0xF1, 0xE6),
-            hover: Color32::from_rgb(0xEB, 0xEB, 0xEB),
-            pressed: Color32::from_rgb(0xDD, 0xDD, 0xDD),
-            separator: Color32::from_rgb(0xE0, 0xE0, 0xE0),
-            grid_bg: Color32::WHITE,
-            desk: Color32::from_rgb(0xDE, 0xDE, 0xDE),
-            gridline: Color32::from_rgb(0xE1, 0xE1, 0xE1),
-            header_bg: Color32::from_rgb(0xF8, 0xF8, 0xF8),
-            header_text: Color32::from_rgb(0x42, 0x42, 0x42),
-            header_line: Color32::from_rgb(0xD6, 0xD6, 0xD6),
-            header_sel_bg: Color32::from_rgb(0xE1, 0xE1, 0xE1),
-            header_sel_text: Color32::from_rgb(0x10, 0x7C, 0x41),
-            header_all_bg: Color32::from_rgb(0xC8, 0xE6, 0xD3),
-            sel_fill: Color32::from_rgba_unmultiplied(0x10, 0x7C, 0x41, 0x1C),
-            sel_border: Color32::from_rgb(0x10, 0x7C, 0x41),
+            window: Color32::from_rgb(0xE4, 0xEC, 0xF2),
+            ribbon: Color32::from_rgb(0xF3, 0xF1, 0xE8),
+            ribbon_border: Color32::from_rgb(0xD9, 0xD6, 0xCB),
+            text: Color32::from_rgb(0x2E, 0x2E, 0x33),
+            text_dim: Color32::from_rgb(0x5C, 0x5C, 0x63),
+            text_disabled: Color32::from_rgb(0xA0, 0x9E, 0x96),
+            accent: Color32::from_rgb(0x5B, 0x7D, 0x5B),
+            accent_dark: Color32::from_rgb(0x4A, 0x6B, 0x4A),
+            accent_soft: Color32::from_rgb(0xD6, 0xE4, 0xD4),
+            hover: Color32::from_rgb(0xE6, 0xEE, 0xE4),
+            pressed: Color32::from_rgb(0xD6, 0xE0, 0xD4),
+            separator: Color32::from_rgb(0xD9, 0xD6, 0xCB),
+            grid_bg: Color32::from_rgb(0xFC, 0xFA, 0xF4),
+            desk: Color32::from_rgb(0xE8, 0xE4, 0xD8),
+            gridline: Color32::from_rgb(0xE0, 0xDC, 0xCE),
+            header_bg: Color32::from_rgb(0xE6, 0xEE, 0xE4),
+            header_text: Color32::from_rgb(0x3F, 0x3F, 0x45),
+            header_line: Color32::from_rgb(0xCF, 0xCC, 0xBF),
+            header_sel_bg: Color32::from_rgb(0xD6, 0xE4, 0xD4),
+            header_sel_text: Color32::from_rgb(0x3E, 0x5E, 0x3E),
+            header_all_bg: Color32::from_rgb(0xD6, 0xE4, 0xD4),
+            sel_fill: Color32::from_rgba_unmultiplied(0x5B, 0x7D, 0x5B, 0x30),
+            sel_border: Color32::from_rgb(0x5B, 0x7D, 0x5B),
             input_bg: Color32::WHITE,
-            input_border: Color32::from_rgb(0xD1, 0xD1, 0xD1),
-            tab_bar: Color32::from_rgb(0xF3, 0xF3, 0xF3),
-            tab_active: Color32::WHITE,
-            status_bar: Color32::from_rgb(0xF3, 0xF3, 0xF3),
-            cell_text: Color32::BLACK,
-            menu_bg: Color32::WHITE,
+            input_border: Color32::from_rgb(0x8A, 0x8A, 0x85),
+            tab_bar: Color32::from_rgb(0xE6, 0xEE, 0xE4),
+            tab_active: Color32::from_rgb(0xFC, 0xFA, 0xF4),
+            status_bar: Color32::from_rgb(0xE4, 0xEC, 0xF2),
+            cell_text: Color32::from_rgb(0x2E, 0x2E, 0x33),
+            menu_bg: Color32::from_rgb(0xFC, 0xFA, 0xF4),
             shadow: Color32::from_black_alpha(40),
-            danger: Color32::from_rgb(0xC4, 0x2B, 0x1C),
+            danger: Color32::from_rgb(0xC0, 0x39, 0x2B),
             notice_warn_bg: Color32::from_rgb(0xFF, 0xF4, 0xCE),
             notice_warn_border: Color32::from_rgb(0xF0, 0xC3, 0x6E),
             notice_info_bg: Color32::from_rgb(0xEA, 0xF2, 0xFB),
@@ -964,5 +964,40 @@ mod tests {
         let loaded = try_load(&[(bad_s.as_str(), 0), (good_s.as_str(), 0)]);
         assert_eq!(loaded.map(|fd| fd.font.len()), Some(real.len()));
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    fn luminance(c: egui::Color32) -> f32 {
+        let f = |v: u8| {
+            let v = f32::from(v) / 255.0;
+            if v <= 0.03928 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) }
+        };
+        0.2126 * f(c.r()) + 0.7152 * f(c.g()) + 0.0722 * f(c.b())
+    }
+
+    fn contrast(a: egui::Color32, b: egui::Color32) -> f32 {
+        let (x, y) = (luminance(a), luminance(b));
+        (x.max(y) + 0.05) / (x.min(y) + 0.05)
+    }
+
+    #[test]
+    fn soft_light_palette_is_readable_and_not_pure_white() {
+        let t = super::Tokens::light();
+        for (name, bg) in [
+            ("ribbon", t.ribbon),
+            ("window", t.window),
+            ("grid", t.grid_bg),
+            ("tab bar", t.tab_bar),
+            ("status bar", t.status_bar),
+            ("menu", t.menu_bg),
+            ("header", t.header_bg),
+        ] {
+            assert!(contrast(t.text, bg) >= 4.5, "text on {name} is {:.2}:1", contrast(t.text, bg));
+            assert_ne!(bg, egui::Color32::WHITE, "{name} must not be pure white");
+        }
+        assert!(contrast(t.text_dim, t.ribbon) >= 4.5);
+        assert!(contrast(egui::Color32::WHITE, t.accent) >= 4.5, "white on accent {:.2}", contrast(egui::Color32::WHITE, t.accent));
+        assert!(contrast(t.input_border, t.input_bg) >= 3.0);
+        assert_eq!(t.input_bg, egui::Color32::WHITE, "the text input stays pure white");
+        assert_ne!(t.text, egui::Color32::BLACK);
     }
 }

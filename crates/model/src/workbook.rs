@@ -104,7 +104,7 @@ pub struct Workbook {
     pub custom_lists: Vec<Vec<String>>,
     /// Named cell styles (Cell Styles gallery): name → style.
     pub cell_styles: Vec<(String, crate::style::Style)>,
-    /// VBA project (`xl/vbaProject.bin`) carried through unchanged. GridCraft does not run
+    /// VBA project (`xl/vbaProject.bin`) carried through unchanged. SheetCalc.it does not run
     /// macros; the blob is preserved so that saving a macro-enabled workbook never destroys the
     /// macros it arrived with. base64 in JSON. `None` = the workbook has no macros.
     #[serde(default, with = "crate::b64::opt")]

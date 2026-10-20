@@ -25,7 +25,7 @@ pub fn start() {
         {
             create.instance_descriptor.backends = eframe::wgpu::Backends::GL;
         }
-        // `?host=parent`: a same-origin page framing GridCraft (such as a Nextcloud app) opens
+        // `?host=parent`: a same-origin page framing SheetCalc.it (such as a Nextcloud app) opens
         // workbooks in it and stores what it saves (`host`).
         let bridge = if query_param("host").as_deref() == Some("parent") { crate::host::Bridge::new() } else { None };
         let app_bridge = bridge.clone();
@@ -75,7 +75,9 @@ pub fn start() {
         if let Some(el) = document.get_element_by_id(LOADING_ID) {
             match result {
                 Ok(()) => el.remove(),
-                Err(e) => el.set_inner_html(&format!("<p>GridCraft failed to start: {e:?}</p><p>A browser with WebGPU or WebGL2 is required.</p>")),
+                Err(e) => {
+                    el.set_inner_html(&format!("<p>SheetCalc.it failed to start: {e:?}</p><p>A browser with WebGPU or WebGL2 is required.</p>"))
+                }
             }
         }
     });

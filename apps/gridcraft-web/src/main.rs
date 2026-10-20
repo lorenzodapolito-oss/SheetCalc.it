@@ -1,4 +1,4 @@
-//! GridCraft in the browser.
+//! SheetCalc.it in the browser.
 //!
 //! Runs the same [`gridcraft_ui_egui::SheetApp`] as the desktop app through eframe's web runner
 //! (wgpu: WebGPU where available, WebGL2 otherwise). Build with `trunk build --release` from
@@ -10,7 +10,7 @@
 //!
 //! URL query flags: `?webgl` forces WebGL2; `?sample=sales|budget|grades` opens a sample;
 //! `?host=parent` (inside an `<iframe>`) talks to a same-origin parent page instead: it sends the
-//! workbook to open and stores what GridCraft saves (`host`), and `&author=` names the user for
+//! workbook to open and stores what SheetCalc.it saves (`host`), and `&author=` names the user for
 //! notes and comments.
 #![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::unimplemented, clippy::todo, clippy::unreachable)]
 

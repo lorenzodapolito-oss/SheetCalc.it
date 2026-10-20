@@ -269,7 +269,7 @@ fn unmodelled_parts_survive_a_round_trip() {
     assert!(pos("<pageSetup") < pos("<legacyDrawing") && pos("<legacyDrawing") < pos("<oleObjects") && pos("<oleObjects") < pos("<controls"));
     // Query table: a sheet relationship only.
     assert!(u.rels(&sheet).iter().any(|r| r.1.ends_with("/queryTable") && u.parts.get(&r.2).is_some_and(|b| b == QUERY_TABLE.as_bytes())));
-    // One VML drawing: the kept control shapes plus GridCraft's note, in a fresh shape block.
+    // One VML drawing: the kept control shapes plus SheetCalc.it's note, in a fresh shape block.
     let vml_id = attr_of(&sx, "legacyDrawing", "r:id");
     let vml_part = u.target(&sheet, &vml_id).1;
     let vml = u.text(&vml_part);
@@ -374,7 +374,7 @@ fn damaged_kept_content_is_dropped_without_failing_the_read() {
         ("rId4", "customXml", "../customXml/missing.xml"),
         // A cycle: item1 → itemProps1 → item1.
         ("rId5", "customXml", "../customXml/item1.xml"),
-        // Kept content that points into a part GridCraft rewrites.
+        // Kept content that points into a part SheetCalc.it rewrites.
         ("rId6", "customXml", "../customXml/item2.xml"),
         // Damaged rels behind a kept part.
         ("rId7", "connections", "connections.xml"),

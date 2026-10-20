@@ -2,12 +2,12 @@
 //!
 //! **Calc oracle.** A workbook saved by Excel (or another calculating producer) carries the
 //! producer's own result next to every formula (`<v>` beside `<f>`). The file is read keeping
-//! those cached values, recalculated from scratch by GridCraft, and every formula cell's new value
+//! those cached values, recalculated from scratch by SheetCalc.it, and every formula cell's new value
 //! is compared with the cached one. Formulas without a cached value (files from writers that don't
 //! calculate) count as *no oracle*; volatile formulas (`RAND`, `NOW`…) and the formulas that read
 //! them are skipped.
 //!
-//! **Round trip.** The recalculated workbook is written with GridCraft's XLSX writer, the package is
+//! **Round trip.** The recalculated workbook is written with SheetCalc.it's XLSX writer, the package is
 //! validated (content types cover every part, every internal relationship target exists, no kind of
 //! relationship the source had is missing) and read back, and the two workbooks are compared feature
 //! by feature.
@@ -40,7 +40,7 @@ const MAX_XML_PART: u64 = 64 * 1024 * 1024;
 /// Most zip entries looked at while validating a written package.
 const MAX_ENTRIES: usize = 200_000;
 /// Relationship kinds (lower case) whose absence after a save isn't a loss: the calculation chain is
-/// a cache Excel rebuilds, and GridCraft never writes it.
+/// a cache Excel rebuilds, and SheetCalc.it never writes it.
 const REBUILT_KINDS: [&str; 1] = ["calcchain"];
 
 #[derive(Clone, Copy, Debug)]
@@ -84,7 +84,7 @@ pub struct Mismatch {
     pub formula: String,
     pub expected: Value,
     pub actual: Value,
-    /// `numeric`, `text`, `bool`, `error`, `blank` (GridCraft produced no value) or `type`.
+    /// `numeric`, `text`, `bool`, `error`, `blank` (SheetCalc.it produced no value) or `type`.
     pub kind: &'static str,
     pub functions: Vec<String>,
     pub primary: bool,
@@ -101,7 +101,7 @@ pub struct CalcReport {
     /// aren't results, so every formula counts as no oracle.
     pub stale_cache: bool,
     pub volatile: usize,
-    /// Matched cells whose producer saved GridCraft's TRUE or FALSE as the number 1 or 0 (no
+    /// Matched cells whose producer saved SheetCalc.it's TRUE or FALSE as the number 1 or 0 (no
     /// `t="b"`, as Business Central's Excel exports do); counted in `matched` too.
     pub bool_as_number: usize,
     /// The first `max_report` mismatches, primary ones first.
@@ -139,7 +139,7 @@ impl RoundTrip {
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct FileReport {
     pub path: String,
-    /// GridCraft couldn't open the file: its message.
+    /// SheetCalc.it couldn't open the file: its message.
     pub error: Option<String>,
     pub warnings: usize,
     pub calc: CalcReport,
@@ -268,7 +268,7 @@ fn walk(dir: &Path, depth: usize, out: &mut Vec<PathBuf>) {
 }
 
 /// Checks one file's bytes. Never fails: problems are recorded in the report. A panic escaping
-/// GridCraft's reader, calculator or writer is caught and reported as an internal error, so one
+/// SheetCalc.it's reader, calculator or writer is caught and reported as an internal error, so one
 /// bad file doesn't end a corpus run.
 pub fn check_bytes(path: &str, bytes: &[u8], opts: &Options) -> FileReport {
     let guarded = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| check_inner(path, bytes, opts)));
@@ -354,14 +354,14 @@ fn cell_name(wb: &Workbook, (sheet, c): Key) -> String {
     format!("{}!{}", quote_sheet(name), c.a1())
 }
 
-/// Whether the producer cached GridCraft's logical result as the number 1 or 0. Excel types a
+/// Whether the producer cached SheetCalc.it's logical result as the number 1 or 0. Excel types a
 /// logical result `t="b"`; a writer that leaves the type out (`<c><f>TRUE()</f><v>1</v></c>`, as
 /// Business Central's "Open in Excel" exports do) stores the same value, read back as a number.
 pub fn bool_cached_as_number(expected: &Value, actual: &Value) -> bool {
     matches!((expected, actual), (Value::Number(n), Value::Bool(b)) if *n == if *b { 1.0 } else { 0.0 })
 }
 
-/// Whether GridCraft's `actual` agrees with the producer's `expected`.
+/// Whether SheetCalc.it's `actual` agrees with the producer's `expected`.
 pub fn values_match(expected: &Value, actual: &Value, tolerance: f64) -> bool {
     match (expected, actual) {
         (Value::Number(a), Value::Number(b)) => (a - b).abs() <= tolerance * a.abs().max(b.abs()).max(1.0),
@@ -420,7 +420,7 @@ impl MismatchIndex {
 }
 
 /// Compares every formula cell of `cached` (as the producer saved it) with `fresh` (recalculated
-/// by GridCraft). Without `trust_cache` nothing is compared (see [`CalcReport::stale_cache`]).
+/// by SheetCalc.it). Without `trust_cache` nothing is compared (see [`CalcReport::stale_cache`]).
 pub fn oracle(cached: &Workbook, fresh: &Workbook, calc: &Calc, trust_cache: bool, opts: &Options) -> CalcReport {
     let mut r = CalcReport { stale_cache: !trust_cache, ..Default::default() };
     let vnames = volatile_names(cached);
@@ -532,7 +532,7 @@ pub fn oracle(cached: &Workbook, fresh: &Workbook, calc: &Calc, trust_cache: boo
 
 // ---------------------------------------------------------------- round trip
 
-/// Writes `wb` with GridCraft's XLSX writer, validates the package against itself and against
+/// Writes `wb` with SheetCalc.it's XLSX writer, validates the package against itself and against
 /// `source` (the file `wb` was read from), reads it back and compares.
 pub fn round_trip(wb: &Workbook, source: &[u8], opts: &Options) -> RoundTrip {
     let bytes = match gridcraft_engine::io::save_bytes(wb, "roundtrip.xlsx") {
@@ -1231,7 +1231,7 @@ fn print_human(reports: &[FileReport], opts: &Options) {
     sigs.sort_by(|a, b| b.1.cmp(a.1).then(a.0.cmp(b.0)));
     if !sigs.is_empty() {
         outln!("");
-        outln!("mismatch signatures (expected → GridCraft):");
+        outln!("mismatch signatures (expected → SheetCalc.it):");
         for (sig, n) in sigs.iter().take(opts.max_report.max(1)) {
             outln!("  {n:>8}  {sig}");
         }
@@ -1310,7 +1310,7 @@ mod tests {
 
     #[test]
     fn wrong_cached_value_is_a_mismatch_and_ranks_its_function() {
-        // Excel "said" SUM gives 7; GridCraft computes 6. C1 reads B1 and is consistent with
+        // Excel "said" SUM gives 7; SheetCalc.it computes 6. C1 reads B1 and is consistent with
         // Excel's 7, so it mismatches too, but only as a downstream effect.
         let wb = book(&[("A1", "2", n(2.0)), ("A2", "4", n(4.0)), ("B1", "=SUM(A1:A2)", n(7.0)), ("C1", "=B1+1", n(8.0))]);
         let r = check(&wb, &Options::default());
@@ -1389,7 +1389,7 @@ mod tests {
 
     #[test]
     fn full_calc_on_load_means_no_oracle() {
-        // A formula without a cached value makes GridCraft's writer flag the file
+        // A formula without a cached value makes SheetCalc.it's writer flag the file
         // `fullCalcOnLoad`, like libraries that store 0 for every formula: B1's wrong "cached"
         // value must not count as a mismatch then.
         let wb = book(&[("A1", "=1+1", Value::Empty), ("B1", "=2+2", n(0.0))]);
@@ -1552,7 +1552,7 @@ mod tests {
 
     #[test]
     fn package_reports_relationship_kinds_the_output_lost() {
-        // A kind GridCraft doesn't know is dropped on save; a calculation chain is never written
+        // A kind SheetCalc.it doesn't know is dropped on save; a calculation chain is never written
         // (Excel rebuilds it), so its absence isn't a loss.
         let calc_chain = r#"<Relationship Id="rId91" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/calcChain" Target="calcChain.xml"/>"#;
         let source = with_rels(&plain(), &[(WB_RELS, &format!("{MADE_UP}{calc_chain}"))], &[MADE_UP_PART, ("xl/calcChain.xml", "<calcChain/>")]);
@@ -1564,7 +1564,7 @@ mod tests {
 
     #[test]
     fn an_internal_link_written_as_a_relationship_is_not_a_loss() {
-        // openpyxl writes `#Sheet1!B2` as an external relationship; GridCraft writes `location`.
+        // openpyxl writes `#Sheet1!B2` as an external relationship; SheetCalc.it writes `location`.
         let link = r##"<Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="#Sheet1!B2" TargetMode="External"/>"##;
         let source = with_rels(&plain(), &[(WB_RELS, MADE_UP), (SHEET_RELS, link)], &[MADE_UP_PART]);
         assert_eq!(package_of(&source), ["lost relationship madeUp"]);

@@ -337,7 +337,7 @@ pub(super) fn translate(text: &str) -> Option<&'static str> {
         "Command\nPalette" => "Riquadro\ncomandi",
         "Agent\nControl" => "Controllo\nagente",
         "Action\nJournal" => "Registro\nazioni",
-        "About\nGridCraft" => "Informazioni su\nGridCraft",
+        "About\nSheetCalc.it" => "Informazioni su\nSheetCalc.it",
         "Share" => "Condividi",
         "Add Chart\nElement" => "Aggiungi elemento\ngrafico",
         "Change\nChart Type" => "Cambia tipo\ndi grafico",
