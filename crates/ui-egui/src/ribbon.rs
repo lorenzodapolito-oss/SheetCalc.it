@@ -115,13 +115,9 @@ pub fn title_bar(app: &mut SheetApp, ui: &mut Ui) {
             // Centered title.
             let title = app.session.active().map(|d| d.display_title()).unwrap_or_default();
             let dirty = app.session.active().is_some_and(|d| d.is_dirty());
-            ui.painter().text(
-                rect.center(),
-                Align2::CENTER_CENTER,
-                format!("{title}{}", if dirty { " •" } else { "" }),
-                theme::ui_bold(13.0),
-                t.text,
-            );
+            let shown =
+                if title.is_empty() { crate::app_title() } else { format!("{title}{} — {}", if dirty { " •" } else { "" }, crate::app_title()) };
+            ui.painter().text(rect.center(), Align2::CENTER_CENTER, shown, theme::ui_bold(13.0), t.text);
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 ui.add_space(8.0);
                 let __k = icon_button(ui, Icon::Search, t.text_dim, "Search commands (⌘⇧Space)", vec2(28.0, ch));

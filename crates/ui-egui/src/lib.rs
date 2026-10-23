@@ -209,6 +209,15 @@ pub struct Perf {
     last: f64,
 }
 
+/// The app's name as shown in window titles, and whose copy it is.
+pub const APP_NAME: &str = "SheetCalc.it";
+pub const APP_OWNER: &str = "Lorenzo D'Apolito";
+
+/// The name shown in the title bar and the window title: "SheetCalc.it di Lorenzo D'Apolito".
+pub fn app_title() -> String {
+    format!("{APP_NAME} di {APP_OWNER}")
+}
+
 /// Which parts of the app's own window chrome are drawn. Everything is on by default; a host
 /// that embeds the sheet in its own window (and owns files itself) can turn off the title bar
 /// and the File tab, whose Backstage view then never opens. Not persisted: it describes the
@@ -1202,7 +1211,7 @@ impl SheetApp {
         }
         // Window title.
         if let Some(d) = self.session.active() {
-            let title = format!("{}{}", d.display_title(), if d.is_dirty() { " — Edited" } else { "" });
+            let title = format!("{}{} — {}", d.display_title(), if d.is_dirty() { " — Edited" } else { "" }, app_title());
             if self.grid.last_title.as_deref() != Some(title.as_str()) {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Title(title.clone()));
                 self.grid.last_title = Some(title);
