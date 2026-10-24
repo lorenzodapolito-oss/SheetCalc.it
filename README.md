@@ -86,3 +86,12 @@ adattamento italiano di Lorenzo D'Apolito. Gli avvisi richiesti sono in [NOTICE]
 Il nome ArtCraft e i suoi loghi sono marchi dell'ArtCraft Team e non sono coperti da questa licenza.
 In questa versione modificata i loghi sono stati rimossi, come richiesto dalle
 [condizioni d'uso del marchio](docs/brand/LICENSE-brand.txt).
+
+## Scarica per Windows
+
+**[Scarica DocPlane.it (zip)](https://github.com/lorenzodapolito-oss/DocPlane/releases/latest/download/DocPlane.it.zip)** · [tutte le versioni](https://github.com/lorenzodapolito-oss/DocPlane/releases)
+
+SheetCalc.it è nel pacchetto **DocPlane.it**, insieme agli altri due programmi (WordBook.it, SheetCalc.it, Flickdeck.it)
+e ai dizionari. Decomprimi lo zip in una cartella e apri `DocPlane.it.exe`, oppure direttamente `SheetCalc.it.exe`.
+Al primo avvio Windows può mostrare «Windows ha protetto il PC» (i programmi non sono firmati):
+scegli *Ulteriori informazioni*, poi *Esegui comunque*.
