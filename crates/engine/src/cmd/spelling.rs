@@ -1,5 +1,7 @@
-//! Spelling: checks text cells against the system word list (`/usr/share/dict/words` on macOS
-//! and Linux; nothing is bundled) plus a user dictionary kept in the engine preferences.
+//! Spelling: checks text cells against the Hunspell dictionary of the default language (Italian in
+//! the desktop app) found in the DocPlane.it dictionary folders, else against the system word list
+//! (`/usr/share/dict/words` on macOS and Linux; nothing is bundled), plus a user dictionary kept in
+//! the engine preferences. The thesaurus reads a MyThes file the same way.
 
 use std::collections::HashSet;
 use std::sync::OnceLock;
@@ -41,7 +43,15 @@ fn dictionary() -> &'static HashSet<String> {
     })
 }
 
+/// The Hunspell dictionary of the default language, when one is installed.
+fn hunspell_dictionary() -> Option<std::sync::Arc<crate::hunspell::Dictionary>> {
+    crate::hunspell::dictionary(&crate::hunspell::default_language())
+}
+
 fn known(s: &Session, w: &str) -> bool {
+    if let Some(d) = hunspell_dictionary() {
+        return s.prefs.user_dictionary.iter().any(|u| u.eq_ignore_ascii_case(w)) || d.check(w);
+    }
     let l = w.to_lowercase();
     let dict = dictionary();
     if dict.contains(&l) || s.prefs.user_dictionary.iter().any(|u| u.eq_ignore_ascii_case(w)) {
@@ -101,6 +111,9 @@ fn edits1(w: &str) -> Vec<String> {
 }
 
 fn suggestions(w: &str) -> Vec<String> {
+    if let Some(d) = hunspell_dictionary() {
+        return d.suggest(w, 6);
+    }
     let dict = dictionary();
     let l = w.to_lowercase();
     let mut out: Vec<String> = edits1(&l).into_iter().filter(|c| dict.contains(c)).collect();
@@ -122,8 +135,11 @@ fn suggestions(w: &str) -> Vec<String> {
 }
 
 fn spelling(s: &mut Session, p: &Json) -> Result<Json> {
-    if dictionary().is_empty() {
-        return Err(EngineError::Other("No dictionary is available on this system (SheetCalc.it uses the system word list).".into()));
+    let hunspell = hunspell_dictionary().is_some();
+    if !hunspell && dictionary().is_empty() {
+        return Err(EngineError::Other(
+            "Nessun dizionario disponibile. Metti i file Hunspell (per esempio it_IT.aff e it_IT.dic) nella cartella «dictionaries» accanto al programma, o scaricali con DocPlane.it.".into(),
+        ));
     }
     let si = target_sheet(s, p)?;
     let d = s.doc()?;
@@ -138,13 +154,14 @@ fn spelling(s: &mut Session, p: &Json) -> Result<Json> {
             continue;
         }
         let Value::Text(t) = &cell.value else { continue };
-        for w in t.split(|ch: char| !(ch.is_alphabetic() || ch == '\'')) {
-            let w = w.trim_matches('\'');
-            if w.chars().count() < 2 || w.chars().all(char::is_uppercase) || !w.is_ascii() {
+        for w in t.split(|ch: char| !(ch.is_alphabetic() || ch == '\'' || ch == '’')) {
+            let w = w.trim_matches(|ch| ch == '\'' || ch == '’').replace('’', "'");
+            // The plain word list only knows unaccented English; a Hunspell dictionary knows every word.
+            if w.chars().count() < 2 || w.chars().all(char::is_uppercase) || (!hunspell && !w.is_ascii()) {
                 continue;
             }
-            if !known(s, w) {
-                issues.push(json!({"cell": c.a1(), "word": w, "suggestions": suggestions(w)}));
+            if !known(s, &w) {
+                issues.push(json!({"cell": c.a1(), "word": w, "suggestions": suggestions(&w)}));
             }
         }
         if issues.len() >= 500 {
@@ -177,6 +194,9 @@ fn thesaurus(_: &mut Session, p: &Json) -> Result<Json> {
     let w = str_param(p, "word").unwrap_or("").to_lowercase();
     if w.len() < 3 {
         return Ok(json!([]));
+    }
+    if let Some(found) = crate::mythes::lookup(&w, 30) {
+        return Ok(json!(found));
     }
     let stem: String = w.chars().take(w.chars().count().saturating_sub(2).max(3)).collect();
     let mut related: Vec<&String> = dictionary().iter().filter(|d| d.starts_with(&stem) && **d != w && d.len() <= w.len() + 4).collect();

@@ -118,6 +118,12 @@ fn log_dir() -> Option<std::path::PathBuf> {
 }
 
 fn load_prefs(app: &mut SheetApp) {
+    // Text is checked in Italian unless the interface is asked to be English (SHEETCALC_LANG=en).
+    gridcraft_engine::hunspell::set_default_language(if std::env::var("SHEETCALC_LANG").is_ok_and(|v| v.trim().eq_ignore_ascii_case("en")) {
+        "en-US"
+    } else {
+        "it-IT"
+    });
     if !prefs_enabled() {
         return;
     }
