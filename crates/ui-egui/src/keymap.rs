@@ -131,7 +131,7 @@ pub fn lookup(key: Key, physical: Option<Key>, m: Modifiers, mac: bool) -> Optio
         ArrowUp if ctrl_alt && mac => borders("top"),
         ArrowDown if ctrl_alt && mac => borders("bottom"),
         // Alt / Option alone.
-        Equals if alt && !s && !mac => run("formulas.autoSum"),
+        Equals if alt && !s && !mac => Shortcut::Run("formulas.autoSum", json!({"enter": false})),
         ArrowDown if alt && !s => Shortcut::DropDown,
         PageDown if alt => Shortcut::ScreenRight,
         PageUp if alt => Shortcut::ScreenLeft,

@@ -96,7 +96,10 @@ fn windows_and_mac_variants() {
     assert_eq!(lookup(Key::L, Some(Key::L), mac_cmd, true), run("home.alignLeft"));
     assert_eq!(lookup(Key::E, Some(Key::E), mac_cmd, true), run("home.alignCenter"));
     assert_eq!(lookup(Key::E, Some(Key::E), ctrl, true), run("edit.flashFill"));
-    assert_eq!(lookup(Key::Equals, Some(Key::Equals), Modifiers::ALT, false), run("formulas.autoSum"));
+    assert_eq!(
+        lookup(Key::Equals, Some(Key::Equals), Modifiers::ALT, false),
+        Some(Shortcut::Run("formulas.autoSum", serde_json::json!({"enter": false})))
+    );
     // The shifted character doesn't matter: Ctrl+Shift+1 is the Number format wherever `!` is.
     assert_eq!(
         lookup(Key::Exclamationmark, Some(Key::Num1), CTRL_SHIFT, false),

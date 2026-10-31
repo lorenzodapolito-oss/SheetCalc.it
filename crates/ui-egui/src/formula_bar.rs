@@ -31,6 +31,11 @@ pub fn show(app: &mut SheetApp, ui: &mut egui::Ui) {
                 if crate::widgets::icon_button(ui, Icon::Fx, t.text, "Insert Function", vec2(26.0, 22.0)).clicked() {
                     app.open_dialog("insertFunction", json!({}));
                 }
+                // AutoSum, next to fx: the formula goes into the cell being edited with the cells
+                // above (or to the left) highlighted; Enter confirms it.
+                if crate::widgets::icon_button(ui, Icon::Sum, t.text, "AutoSum", vec2(24.0, 22.0)).clicked() {
+                    app.run_or_alert("formulas.autoSum", json!({"enter": false}));
+                }
                 ui.add_space(4.0);
                 // The formula field.
                 let avail = ui.available_width() - 24.0;

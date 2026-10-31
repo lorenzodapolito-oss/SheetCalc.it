@@ -954,12 +954,13 @@ fn home(app: &mut SheetApp, ui: &mut Ui) {
             let (s, sa) = split_button(ui, Icon::Sum, None, "AutoSum (⌘⇧T)");
             control_keytip(app, ui, &sa, "formulas.autoSum");
             if s {
-                act(app, "formulas.autoSum", json!({}));
+                act(app, "formulas.autoSum", json!({"enter": false}));
             }
             egui::Popup::menu(&sa).show(|ui| {
+                let locale = app.ui.language.formula_locale();
                 for f in ["SUM", "AVERAGE", "COUNT", "MAX", "MIN"] {
-                    if ui.button(f).clicked() {
-                        act(app, "formulas.autoSum", json!({"function": f}));
+                    if ui.button(locale.function_name(f)).clicked() {
+                        act(app, "formulas.autoSum", json!({"function": f, "enter": false}));
                     }
                 }
                 ui.separator();
@@ -1754,7 +1755,7 @@ fn formulas(app: &mut SheetApp, ui: &mut Ui) {
     let s = big_button(ui, Icon::Sum, "AutoSum", "AutoSum", true);
     control_keytip(app, ui, &s, "formulas.autoSum");
     if s.clicked() {
-        act(app, "formulas.autoSum", json!({}));
+        act(app, "formulas.autoSum", json!({"enter": false}));
     }
     for (label, cat, cid) in [
         ("Financial", "Financial", "formulas.financial"),
@@ -2439,7 +2440,7 @@ pub fn shortcut(app: &mut SheetApp, key: Key, m: Modifiers) {
             app.open_dialog("goTo", json!({}));
             None
         }
-        Key::T if shift => Some(("formulas.autoSum", json!({}))),
+        Key::T if shift => Some(("formulas.autoSum", json!({"enter": false}))),
         Key::T => Some(("insert.table", json!({}))),
         Key::E => Some(("edit.flashFill", json!({}))),
         Key::Num1 => {
